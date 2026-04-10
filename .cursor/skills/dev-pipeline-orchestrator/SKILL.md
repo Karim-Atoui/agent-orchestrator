@@ -19,7 +19,8 @@ Do **not** spawn parallel coding agents unless the user explicitly opts in; defa
 
 1. Confirm **workspace root** is the **target application repository** (not the orchestrator kit). If unclear, ask once.
 2. Read project context: `AGENTS.md`, `.cursor/rules`, and **the canonical verify command** (see [reference.md](reference.md)).
-3. If the repo has no `scripts/verify.sh` (or equivalent), create one that runs the same checks as CI, or document the exact commands in `AGENTS.md` before heavy implementation.
+3. If `pipeline.config.yaml` exists at the repo root, use its `verify.command` and escalation/confidence overrides; otherwise use defaults in [reference.md](reference.md).
+4. If the repo has no `scripts/verify.sh` (or equivalent), create one that runs the same checks as CI, or document the exact commands in `AGENTS.md` before heavy implementation.
 
 ## Artifacts
 
