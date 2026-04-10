@@ -31,3 +31,4 @@ make ci
 ## Wiring
 
 - Add `pipeline.config.yaml` (see `pipeline.config.example.yaml` in the orchestrator kit) with `verify.command` if not using `./scripts/verify.sh`.
+

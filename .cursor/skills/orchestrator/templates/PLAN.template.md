@@ -18,6 +18,12 @@
 
 - <explicit non-goals>
 
+## Clarifications (before approval)
+
+*If anything was ambiguous, resolve with the human first; list decisions here. Otherwise: “None — requirements clear.”*
+
+- <question → decision, or “None”>
+
 ## Approach
 
 1. <step>
@@ -48,7 +54,7 @@
 ## Definition of done
 
 - Verify passes locally via canonical command.
-- PR description complete; human approved plan and PR gates satisfied.
+- PR description complete; human approved plan gate satisfied.
 
 ---
 **Confidence after plan draft:** <0.0–1.0> — <one line>

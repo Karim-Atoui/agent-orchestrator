@@ -1,54 +1,62 @@
-# Dev pipeline orchestrator (Cursor)
+# Orchestrator (Cursor)
 
-Kit for running a **sequential** agent workflow: **intake → plan → approve plan → implement → verify → docs → approve PR → GitHub PR**, with **confidence scoring** and **escalation** when verification keeps failing.
+Sequential agent workflow: **intake → plan → approve plan → implement → verify → docs → GitHub PR**, with **confidence scoring** and **escalation** on repeated verify failures. The orchestrator is **thin**: heavy exploration, verify triage, and large edits are delegated to Cursor **Task** sub-agents (separate context, optional read-only or worktree isolation) so long tasks stay manageable and costs stay controlled.
+
+Full behavior: `SKILL.md` inside the skill folder; numbers and Task routing: `reference.md` in the same folder.
 
 ## Contents
 
 | Path | Purpose |
 |------|---------|
-| `.cursor/skills/dev-pipeline-orchestrator/` | Cursor skill (instructions + templates) |
-| `pipeline.config.example.yaml` | Optional per-repo thresholds and verify command |
-| `scripts/verify.contract.md` | What `scripts/verify.sh` should do in app repos |
-| `scripts/verify.example.sh` | Stub to copy and replace in app repos |
+| `.cursor/skills/orchestrator/` | Skill (`SKILL.md`, `reference.md`, templates) |
+| `.cursor/commands/orchestrate.md` | Thin `/orchestrate` entry — points at the skill |
+| `pipeline.config.example.yaml` | Optional per-repo overrides |
+| `scripts/verify.contract.md` | Contract for `scripts/verify.sh` in app repos |
+| `scripts/verify.example.sh` | Stub to copy |
 
-## Slash command (all projects)
+## Install once (every workspace)
 
-Global commands live in `~/.cursor/commands/*.md`. The name of the file (without `.md`) is the `/` command.
+Put the skill in your **user** skills directory so Cursor loads it for **any** folder you open — no per-project copy.
 
-Install **`/orchestrate`** once on your machine:
+From a clone of this repo:
 
 ```bash
-cp ~/code/agent-orchestrator/.cursor/commands/orchestrate.md ~/.cursor/commands/orchestrate.md
+./install-skill.sh
 ```
 
-(Adjust the source path if you keep the kit somewhere else.)
+That symlinks this repository’s `.cursor/skills/orchestrator` to `~/.cursor/skills/orchestrator`. Re-run after you `git pull` the kit if you want the symlink to keep pointing at this clone (or copy the folder instead of symlinking if you prefer a snapshot).
 
-In **Agent** chat, type **`/`** → **`orchestrate`** → edit **Goal** / issue / constraints in the inserted text (or send them in the next message). Reload Cursor if the command does not appear yet.
+Slash commands are user-scoped too. Install the entry once:
 
-## Use in an application repository
+```bash
+cp /path/to/this-kit/.cursor/commands/orchestrate.md ~/.cursor/commands/orchestrate.md
+```
 
-1. **Copy the skill** into the app repo (pick one):
+In Agent chat: **`/`** → **`orchestrate`** → fill Goal / issue / constraints. Reload Cursor if the command does not appear.
 
-   - **Option A:** Copy the folder `.cursor/skills/dev-pipeline-orchestrator/` into your project’s `.cursor/skills/`.
-   - **Option B:** From this repo, run `./install-skill.sh` with your project path to symlink the skill into that repo’s `.cursor/skills/` (see script help).
+### Optional: pin a version in one repo
 
-2. **Add a verify entrypoint** in the app repo, e.g. `scripts/verify.sh`, matching CI. See `scripts/verify.contract.md`.
+To ship a **fixed** skill revision with a team repo, symlink or copy `.cursor/skills/orchestrator` into that repo’s `.cursor/skills/` (see `./install-skill.sh /path/to/repo`). User-level skills still apply unless you rely on project-only overrides.
 
-3. **Optional:** Copy `pipeline.config.example.yaml` to `pipeline.config.yaml` at the app repo root and adjust. The skill uses it when present; otherwise it follows `reference.md` defaults.
+## One orchestrator vs many skills
 
-4. **Document** the verify command in `AGENTS.md` or README so every agent run agrees on one command.
+**You can have both.** A common pattern:
 
-5. In Cursor, invoke the workflow by asking the agent to follow the **dev-pipeline-orchestrator** skill (or describe the pipeline in your own words; the skill description helps discovery).
+- **One `orchestrator` skill** — owns the end-to-end pipeline, gates, confidence, and when to spawn Task workers.
+- **Additional skills** — narrow domains (e.g. “code review rubric”, “release notes”, “migrations checklist”) that are **small and reusable**. The orchestrator can say “follow the X skill for step Y” or you invoke them directly with `/` when you do not need the full pipeline.
 
-## Human gates (enforced by the skill)
+Avoid making **every** skill a separate “orchestrator” — you get competing workflows and unclear ownership. Prefer **one coordinator** plus **specialists** (or Task sub-agents inside the pipeline) unless a domain is truly standalone.
 
-- Approval **after the plan**, before implementation.
-- Approval **before opening the PR** (or before marking ready for review).
+## Use in an application repo
 
-## Escalation
+1. **Prefer** user install above so you do not duplicate the skill.
+2. Add `scripts/verify.sh` (or equivalent) matching CI; document in `AGENTS.md`.
+3. Optionally copy `pipeline.config.example.yaml` → `pipeline.config.yaml` at repo root.
 
-Stops and asks you when repeated verify failures or low confidence thresholds are hit (see `reference.md`).
+## Human gate
+
+One gate: **approval after plan**, before implementation. No second gate before push; review on GitHub.
 
 ## This repository
 
-`AGENTS.md` describes how to maintain this kit. It is not an application runtime; it is documentation + Cursor assets you copy into real projects.
+Kit only — not a runtime. Maintainer notes: `AGENTS.md`.

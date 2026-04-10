@@ -21,7 +21,8 @@ escalation:
 
 gates:
   require_plan_approval: true
-  require_pr_approval: true
+  # Skill default: no stop before push/PR; review on GitHub.
+  require_pr_approval: false
 
 github:
   default_base_branch: main
