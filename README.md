@@ -11,6 +11,18 @@ Kit for running a **sequential** agent workflow: **intake → plan → approve p
 | `scripts/verify.contract.md` | What `scripts/verify.sh` should do in app repos |
 | `scripts/verify.example.sh` | Stub to copy and replace in app repos |
 
+## Slash command (all projects)
+
+Global commands live in `~/.cursor/commands/*.md`. The name of the file (without `.md`) is the `/` command.
+
+Install **`/dev-pipeline`** once on your machine:
+
+```bash
+cp /path/to/agent-orchestrator/.cursor/commands/dev-pipeline.md ~/.cursor/commands/dev-pipeline.md
+```
+
+In **Agent** chat, type **`/`** → **`dev-pipeline`** → edit **Goal** / issue / constraints in the inserted text (or send them in the next message). Reload Cursor if the command does not appear yet.
+
 ## Use in an application repository
 
 1. **Copy the skill** into the app repo (pick one):
