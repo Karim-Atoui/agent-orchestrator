@@ -1,0 +1,11 @@
+---
+description: Maintains the dev-pipeline orchestrator kit (skill, templates, config examples)
+alwaysApply: true
+---
+
+# Orchestrator kit
+
+- Primary workflow instructions live in `.cursor/skills/dev-pipeline-orchestrator/SKILL.md`; numeric detail in `reference.md`.
+- Do not duplicate long threshold tables in `SKILL.md`; link to `reference.md` instead.
+- Templates belong in `.cursor/skills/dev-pipeline-orchestrator/templates/`.
+- Application repositories copy this skill; they are the place for `scripts/verify.sh` and app-specific rules.

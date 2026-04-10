@@ -1,0 +1,31 @@
+# Copy to pipeline.config.yaml in an application repo and adjust.
+# The orchestrator reads these values when present; otherwise use reference.md defaults.
+
+confidence:
+  initial_plan_strong: 0.72
+  initial_plan_uncertain: 0.55
+  initial_plan_weak: 0.40
+  delta_verify_pass: 0.08
+  delta_verify_pass_after_small_fix: 0.04
+  delta_verify_fail: -0.12
+  delta_verify_fail_environmental: -0.06
+  delta_same_root_cause_repeat: -0.15
+  band_high_min: 0.65
+  band_medium_min: 0.45
+  band_low_min: 0.25
+
+escalation:
+  same_failure_consecutive_max: 3
+  total_failures_max: 5
+  confidence_floor: 0.34
+
+gates:
+  require_plan_approval: true
+  require_pr_approval: true
+
+github:
+  default_base_branch: main
+
+verify:
+  # Preferred single entrypoint from repo root:
+  command: "./scripts/verify.sh"
