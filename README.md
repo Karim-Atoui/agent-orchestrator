@@ -18,8 +18,10 @@ Global commands live in `~/.cursor/commands/*.md`. The name of the file (without
 Install **`/orchestrate`** once on your machine:
 
 ```bash
-cp /path/to/agent-orchestrator/.cursor/commands/orchestrate.md ~/.cursor/commands/orchestrate.md
+cp ~/code/agent-orchestrator/.cursor/commands/orchestrate.md ~/.cursor/commands/orchestrate.md
 ```
+
+(Adjust the source path if you keep the kit somewhere else.)
 
 In **Agent** chat, type **`/`** → **`orchestrate`** → edit **Goal** / issue / constraints in the inserted text (or send them in the next message). Reload Cursor if the command does not appear yet.
 
