@@ -8,8 +8,7 @@ Full behavior: `SKILL.md` inside the skill folder; numbers and Task routing: `re
 
 | Path | Purpose |
 |------|---------|
-| `.cursor/skills/orchestrator/` | Skill (`SKILL.md`, `reference.md`, templates) |
-| `.cursor/commands/orchestrate.md` | Thin `/orchestrate` entry — points at the skill |
+| `.cursor/skills/orchestrator/` | Skill (`SKILL.md`, `reference.md`, templates); slash **`/orchestrate`** via skill `name` |
 | `pipeline.config.example.yaml` | Optional per-repo overrides |
 | `scripts/verify.contract.md` | Contract for `scripts/verify.sh` in app repos |
 | `scripts/verify.example.sh` | Stub to copy |
@@ -26,13 +25,9 @@ From a clone of this repo:
 
 That symlinks this repository’s `.cursor/skills/orchestrator` to `~/.cursor/skills/orchestrator`. Re-run after you `git pull` the kit if you want the symlink to keep pointing at this clone (or copy the folder instead of symlinking if you prefer a snapshot).
 
-Slash commands are user-scoped too. Install the entry once:
+In Agent chat: **`/`** → **`orchestrate`** (skill id `orchestrate`). Fill Goal / issue / constraints from the [slash section](.cursor/skills/orchestrator/SKILL.md) in `SKILL.md`. Reload Cursor if the command does not appear.
 
-```bash
-cp /path/to/this-kit/.cursor/commands/orchestrate.md ~/.cursor/commands/orchestrate.md
-```
-
-In Agent chat: **`/`** → **`orchestrate`** → fill Goal / issue / constraints. Reload Cursor if the command does not appear.
+If you previously copied `.cursor/commands/orchestrate.md` to `~/.cursor/commands/`, **delete that file** so you do not get two `/orchestrate` entries.
 
 ### Optional: pin a version in one repo
 
@@ -42,7 +37,7 @@ To ship a **fixed** skill revision with a team repo, symlink or copy `.cursor/sk
 
 **You can have both.** A common pattern:
 
-- **One `orchestrator` skill** — owns the end-to-end pipeline, gates, confidence, and when to spawn Task workers.
+- **One orchestrate skill** (folder `orchestrator/`) — owns the end-to-end pipeline, gates, confidence, and when to spawn Task workers.
 - **Additional skills** — narrow domains (e.g. “code review rubric”, “release notes”, “migrations checklist”) that are **small and reusable**. The orchestrator can say “follow the X skill for step Y” or you invoke them directly with `/` when you do not need the full pipeline.
 
 Avoid making **every** skill a separate “orchestrator” — you get competing workflows and unclear ownership. Prefer **one coordinator** plus **specialists** (or Task sub-agents inside the pipeline) unless a domain is truly standalone.

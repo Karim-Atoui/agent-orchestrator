@@ -1,5 +1,5 @@
 ---
-name: orchestrator
+name: orchestrate
 description: >-
   Runs a sequential software delivery pipeline from task intake through plan approval,
   implementation, verification, documentation updates, and GitHub PR—with confidence
@@ -10,6 +10,27 @@ description: >-
 ---
 
 # Orchestrator
+
+## `/orchestrate` (slash entry)
+
+**Skill resolution** — Cursor merges:
+
+- **User (default):** `~/.cursor/skills/orchestrator/`
+- **Project override:** `.cursor/skills/orchestrator/` in the repo
+
+**Do not duplicate** steps or numbers outside this file and `reference.md` — they are the single source of truth.
+
+### Task (user — keep or replace)
+
+**Goal:**
+
+**GitHub issue (optional):**
+
+**Constraints (optional):**
+
+### Instruction
+
+Run this pipeline **end-to-end** for this workspace until it completes or you hit a mandatory stop (plan gate, escalation, or user interrupt).
 
 ## Role
 

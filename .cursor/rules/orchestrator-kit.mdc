@@ -6,7 +6,7 @@ alwaysApply: true
 # Orchestrator kit
 
 - **Workflow:** `.cursor/skills/orchestrator/SKILL.md` (canonical). **Numbers/policies/Task routing:** `reference.md`.
-- **Slash entry:** `.cursor/commands/orchestrate.md` defers to `SKILL.md` — do not duplicate steps there.
+- **Slash entry:** skill `name: orchestrate` in `SKILL.md` → `/orchestrate` only — do not add a second command file.
 - Do not put long threshold tables in `SKILL.md`; keep them in `reference.md`.
 - Templates: `.cursor/skills/orchestrator/templates/`.
 - App repos copy this skill; they own `scripts/verify.sh` and app-specific rules.
